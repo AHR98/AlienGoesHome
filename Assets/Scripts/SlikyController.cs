@@ -14,8 +14,11 @@ public class SlikyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Walk-run
         animController.SetFloat("Speed", Input.GetAxis("Vertical"));
         animController.SetFloat("Direction", Input.GetAxis("Horizontal"));
+
+        //Special Dance
         if(Input.GetKey(KeyCode.LeftShift) )
             if(Input.GetKeyUp(KeyCode.D))
                 animController.SetTrigger("Dance");
