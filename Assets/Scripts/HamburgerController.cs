@@ -9,7 +9,6 @@ public class HamburgerController : MonoBehaviour
     RaycastHit raycastHitHamburger;
     Animator playerAnimator;
     public float lookRadius = 5f;
-    public GameObject hamHamburger;
     Transform target;
     NavMeshAgent agentHam;
 
@@ -18,7 +17,7 @@ public class HamburgerController : MonoBehaviour
     {
         target = PlayerManager.instance.playerSlinky.transform;
         agentHam = GetComponent<NavMeshAgent>();
-        hamHamburgerAnimator = hamHamburger.GetComponent<Animator>();
+        hamHamburgerAnimator = GetComponent<Animator>();
         playerAnimator  = PlayerManager.instance.playerSlinky.GetComponent<Animator>();
     }
 
@@ -29,17 +28,23 @@ public class HamburgerController : MonoBehaviour
      //   rayHamburger = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
         if(distance <= lookRadius)
         {
+            hamHamburgerAnimator.SetBool("Chase", true);
             agentHam.SetDestination(target.position);
-            hamHamburgerAnimator.SetTrigger("Chase");
-            hamHamburgerAnimator.SetFloat("Distance", distance);
+            //  hamHamburgerAnimator.SetFloat("Distance", distance);
 
-            //if (distance<=agentHam.stoppingDistance)
-            //{
-            //    Debug.Log("DieSlinkyyy");
-            //    playerAnimator.SetTrigger("Die");
-            //}
+            if (distance <= agentHam.stoppingDistance)
+            {
+                playerAnimator.SetTrigger("Die");
+                hamHamburgerAnimator.SetBool("Chase", false);
+
+            }
         }
-       
+        else
+        {
+            hamHamburgerAnimator.SetBool("Chase", false);
+
+        }
+
 
         //if (Physics.Raycast(rayHamburger, out raycastHitHamburger, 10))
         //{
@@ -51,5 +56,11 @@ public class HamburgerController : MonoBehaviour
 
         //}
 
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
 }
