@@ -8,7 +8,7 @@ public class HamburgerController : MonoBehaviour
     Ray rayHamburger;
     RaycastHit raycastHitHamburger;
     Animator playerAnimator;
-    public float lookRadius = 5f;
+    public float lookRadius = 6f;
     Transform target;
     NavMeshAgent agentHam;
 
@@ -30,18 +30,24 @@ public class HamburgerController : MonoBehaviour
         {
             hamHamburgerAnimator.SetBool("Chase", true);
             agentHam.SetDestination(target.position);
+            playerAnimator.SetBool("Shooting", true);
+
             //  hamHamburgerAnimator.SetFloat("Distance", distance);
 
-            if (distance <= agentHam.stoppingDistance)
+            if (distance <= agentHam.stoppingDistance) //Atack
             {
-                playerAnimator.SetTrigger("Die");
+               // playerAnimator.SetTrigger("Die");
                 hamHamburgerAnimator.SetBool("Chase", false);
+                hamHamburgerAnimator.SetBool("Attack", true);
 
             }
         }
         else
         {
             hamHamburgerAnimator.SetBool("Chase", false);
+            hamHamburgerAnimator.SetBool("Attack", false);
+            playerAnimator.SetBool("Shooting", false);
+
 
         }
 

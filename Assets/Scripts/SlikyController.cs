@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SlikyController : MonoBehaviour
 {
+    public GameObject gun;
     private Animator animController;
     private float horizontalDirection;
     private float verticalDirection;
@@ -21,13 +22,34 @@ public class SlikyController : MonoBehaviour
         //Special Dance
         if (Input.GetKey(KeyCode.LeftShift))
             if (Input.GetKeyUp(KeyCode.Z))
+            {
                 animController.SetTrigger("Dance");
+                this.gun.SetActive(false);
 
-        if(Input.GetKey(KeyCode.J))
+            }
+
+
+        if (animController.GetBool("Shooting") == true)
+        {
+            this.gun.SetActive(true);
+
+        }
+        
+        if (Input.GetKeyDown(KeyCode.J))
         {
             //Shot
+            this.gun.SetActive(true);
         }
-
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            animController.SetBool("Hypnosis", true);
+            this.gun.SetActive(false);
+        }
+        if (Input.GetKeyUp(KeyCode.K))
+        {
+            animController.SetBool("Hypnosis", false);
+        }
+        
 
         //Walk-run
         animController.SetFloat("Speed", verticalDirection);
