@@ -23,20 +23,16 @@ public class SlikyController : MonoBehaviour
             if (Input.GetKeyUp(KeyCode.Z))
                 animController.SetTrigger("Dance");
 
+        if(Input.GetKey(KeyCode.J))
+        {
+            //Shot
+        }
 
 
         //Walk-run
         animController.SetFloat("Speed", verticalDirection);
         animController.SetFloat("Direction", horizontalDirection);
-        if (verticalDirection != 0.0f || horizontalDirection != 0.0f)
-        {
-            animController.SetBool("Run", true);
-        }
-        else
-        {
-            animController.SetBool("Run", false);
-        }
-
+      
         //if (verticalDirection > 0.1f
         //    || (verticalDirection > 0.5f && horizontalDirection > 0.5f
         //    || verticalDirection > 0.5f && horizontalDirection < -0.5f))
@@ -70,11 +66,9 @@ public class SlikyController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("IS A COLLIDER");
 
         if (collision.collider.CompareTag("Door"))
         {
-            Debug.Log("IS A DOOR");
         }
     }
 }
