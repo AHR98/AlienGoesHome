@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 public class HamburgerController : MonoBehaviour
 {
+    [SerializeField]
+    private int startingHealth = 5;
+    [SerializeField]
+    private int currentHealth;
     Animator hamHamburgerAnimator;
     Ray rayHamburger;
     RaycastHit raycastHitHamburger;
@@ -11,7 +15,8 @@ public class HamburgerController : MonoBehaviour
     public float lookRadius = 6f;
     Transform target;
     NavMeshAgent agentHam;
-
+    [SerializeField]
+    private Transform attackPlayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,35 +43,61 @@ public class HamburgerController : MonoBehaviour
             {
                // playerAnimator.SetTrigger("Die");
                 hamHamburgerAnimator.SetBool("Chase", false);
-                hamHamburgerAnimator.SetBool("Attack", true);
-
+                Attack(true);
+            }
+            else
+            {
+                hamHamburgerAnimator.SetBool("Chase", true);
+                Attack(false);
             }
         }
         else
         {
-            hamHamburgerAnimator.SetBool("Chase", false);
-            hamHamburgerAnimator.SetBool("Attack", false);
+            Attack(false);
+            hamHamburgerAnimator.SetBool("Chase", false);        
             playerAnimator.SetBool("Shooting", false);
 
 
         }
 
 
-        //if (Physics.Raycast(rayHamburger, out raycastHitHamburger, 10))
-        //{
-        //    Debug.DrawLine(rayHamburger.origin, raycastHitHamburger.point, Color.red);
-        //    if(raycastHitHamburger.transform.tag == "Player")
-        //    {
-        //        playerAnimator.SetTrigger("Die");
-        //    }
+       
 
-        //}
+    }
 
+    private void Attack(bool attack)
+    {
+        hamHamburgerAnimator.SetBool("Attack", attack);
+        if (attack)
+        {
+            //Damage player
+            Debug.DrawRay(attackPlayer.position, attackPlayer.forward * 100, Color.blue, 2f);
+        }
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, lookRadius);
+    }
+
+    private void Die()
+    {
+        hamHamburgerAnimator.SetTrigger("Die");
+        playerAnimator.SetBool("Shooting", false);
+    }
+
+    private void OnEnable()
+    {
+        currentHealth = startingHealth;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 }

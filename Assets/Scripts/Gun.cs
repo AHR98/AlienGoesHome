@@ -27,5 +27,21 @@ public class Gun : MonoBehaviour
     private void FireGun()
     {
         Debug.DrawRay(firePoint.position, firePoint.forward * 100, Color.red, 2f);
+        Ray ray = new Ray(firePoint.position, firePoint.forward);
+        RaycastHit hitInfo;
+
+        if(Physics.Raycast(ray, out hitInfo, 100))
+        {
+            if (hitInfo.transform.CompareTag("Enemy"))
+            {
+                //Destroy(hitInfo.collider.gameObject);
+                var healthEnemy = hitInfo.collider.GetComponent<HamburgerController>();
+                if (healthEnemy != null)
+                {
+                    healthEnemy.TakeDamage(damage);
+                }
+            }
+        }
+
     }
 }

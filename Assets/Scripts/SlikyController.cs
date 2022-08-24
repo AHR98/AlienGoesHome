@@ -4,10 +4,33 @@ using UnityEngine;
 
 public class SlikyController : MonoBehaviour
 {
+    [SerializeField]
+    private int startingHealth = 10;
+    private int currentHealth;
     public GameObject gun;
     private Animator animController;
     private float horizontalDirection;
     private float verticalDirection;
+
+    private void OnEnable()
+    {
+        currentHealth = startingHealth;
+    }
+
+    public void TakeDamage()
+    {
+        currentHealth -= startingHealth;
+        if(currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        animController.SetTrigger("Die");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
