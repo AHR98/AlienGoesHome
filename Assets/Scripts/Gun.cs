@@ -10,6 +10,8 @@ public class Gun : MonoBehaviour
     private float timer;
     [SerializeField]
     private Transform firePoint;
+    [SerializeField]
+    private ParticleSystem shootParticle;
     // Update is called once per frame
     void Update()
     {
@@ -26,11 +28,13 @@ public class Gun : MonoBehaviour
 
     private void FireGun()
     {
-        Debug.DrawRay(firePoint.position, firePoint.forward * 100, Color.red, 2f);
+        //Debug.DrawRay(firePoint.position, firePoint.forward * 100, Color.red, 2f);
         Ray ray = new Ray(firePoint.position, firePoint.forward);
         RaycastHit hitInfo;
 
-        if(Physics.Raycast(ray, out hitInfo, 100))
+        shootParticle.Play();
+
+        if (Physics.Raycast(ray, out hitInfo, 100))
         {
             if (hitInfo.transform.CompareTag("Enemy"))
             {
