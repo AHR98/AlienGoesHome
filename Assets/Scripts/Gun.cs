@@ -29,8 +29,6 @@ public class Gun : MonoBehaviour
                 timer = 0;
                 FireGun();
                 currentBullets--;
-                Debug.Log("Balas: " + ((float)currentBullets / (float)maxBullets).ToString());
-
                 shootingBarChange((float)currentBullets / (float)maxBullets);
             }
         }
