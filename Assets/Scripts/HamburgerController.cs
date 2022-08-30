@@ -12,14 +12,16 @@ public class HamburgerController : MonoBehaviour
     [SerializeField]
     private Image healthBar;
     Animator hamHamburgerAnimator;
-    Ray rayHamburger;
-    RaycastHit raycastHitHamburger;
+    private float timer;
     Animator playerAnimator;
+    GameObject slinkyPlayer;
     public float lookRadius = 6f;
     Transform target;
     NavMeshAgent agentHam;
     [SerializeField]
     private Transform attackPlayer;
+    [SerializeField][Range(1, 10)] private int damage = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,13 +29,17 @@ public class HamburgerController : MonoBehaviour
        // healthBar = GetComponent<Image>(); ;
         agentHam = GetComponent<NavMeshAgent>();
         hamHamburgerAnimator = GetComponent<Animator>();
-        playerAnimator = PlayerManager.instance.playerSlinky.GetComponent<Animator>();
+        slinkyPlayer = PlayerManager.instance.playerSlinky.gameObject;
+        playerAnimator = slinkyPlayer.GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
         float distance = Vector3.Distance(target.position, transform.position);
+        Debug.DrawRay(attackPlayer.position, attackPlayer.forward, Color.blue, 2f);
+
         //   rayHamburger = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
         if (distance <= lookRadius)
         {
@@ -43,11 +49,14 @@ public class HamburgerController : MonoBehaviour
 
             //  hamHamburgerAnimator.SetFloat("Distance", distance);
 
-            if (distance <= agentHam.stoppingDistance) //Atack
+            if (distance <= agentHam.stoppingDistance ) //Atack
             {
                 // playerAnimator.SetTrigger("Die");
+                timer += Time.deltaTime;
+
                 hamHamburgerAnimator.SetBool("Chase", false);
                 Attack(true);
+
             }
             else
             {
@@ -71,13 +80,37 @@ public class HamburgerController : MonoBehaviour
 
     private void Attack(bool attack)
     {
-        hamHamburgerAnimator.SetBool("Attack", attack);
-        if (attack)
+        Ray ray = new Ray(attackPlayer.position, attackPlayer.forward);
+        RaycastHit hitInfo;
+
+        if (attack && timer >= 5f)
         {
-            //Damage Slinky
-            Debug.DrawRay(attackPlayer.position, attackPlayer.forward * 100, Color.blue, 2f);
+            hamHamburgerAnimator.SetBool("Attack", attack);
+            if (Physics.Raycast(ray, out hitInfo, agentHam.stoppingDistance))
+            {
+                if (hitInfo.transform.CompareTag("Player"))
+                {
+                    //Destroy(hitInfo.collider.gameObject);
+                    var healthSlinky = hitInfo.collider.GetComponent<SlikyController>();
+                    if (healthSlinky != null)
+                    {
+                        healthSlinky.TakeDamage(damage);
+                        timer = 0;
+
+                    }
+                }
+            }
+
+
+
+        }
+        else
+        {
+            hamHamburgerAnimator.SetBool("Attack", false);
+
         }
     }
+    
 
     //void OnDrawGizmosSelected()
     //{

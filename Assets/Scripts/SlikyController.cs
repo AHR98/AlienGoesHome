@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class SlikyController : MonoBehaviour
 {
     [SerializeField]
-    private int startingHealth = 10;
+    private int startingHealth = 50;
+    [SerializeField]
+    private Image healthBar;
+    [SerializeField]
     private int currentHealth;
     public GameObject gun;
     private Animator animController;
@@ -77,37 +80,40 @@ public class SlikyController : MonoBehaviour
         //Walk-run
         animController.SetFloat("Speed", verticalDirection);
         animController.SetFloat("Direction", horizontalDirection);
-      
-        //if (verticalDirection > 0.1f
-        //    || (verticalDirection > 0.5f && horizontalDirection > 0.5f
-        //    || verticalDirection > 0.5f && horizontalDirection < -0.5f))
-        //{
-        //    animController.SetBool("Run", true);
-        //}
-        //else if (verticalDirection < 0.0f) //Back
-        //{
-        //    animController.SetBool("TurnAroundRight", true);
-        //    //  animController.SetBool("Run", true);
-        //}
-        //else if (horizontalDirection > 0.0f && verticalDirection == 0.0f)
-        //{
-        //    animController.SetBool("TurnAroundRight", true);
-        //}
-        //else if (horizontalDirection < 0.0f && verticalDirection == 0.0f)
-        //{
-        //    animController.SetBool("TurnAroundLeft", true);
-
-        //}
-        //else
-        //{
-        //    animController.SetBool("TurnAroundRight", false);
-        //    animController.SetBool("TurnAroundLeft", false);
-        //    animController.SetBool("Run", false);
-        //}
-
-
+     
 
     }
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthChange((float)currentHealth / (float)startingHealth);
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void healthChange(float _health)
+    {
+        StartCoroutine(changeHealthBar(_health));
+    }
+
+    private IEnumerator changeHealthBar(float _health)
+    {
+        float preHealth = healthBar.fillAmount;
+        float elapsed = 0f;
+        while (elapsed < 0.2f)
+        {
+            elapsed += Time.deltaTime;
+            healthBar.fillAmount = Mathf.Lerp(preHealth, _health, elapsed / 0.2f);
+            yield return null;
+        }
+
+        healthBar.fillAmount = _health;
+    }
+
+
+
 
     private void OnCollisionEnter(Collision collision)
     {
