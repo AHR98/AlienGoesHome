@@ -21,7 +21,7 @@ public class HamburgerController : MonoBehaviour
     [SerializeField]
     private Transform attackPlayer;
     [SerializeField][Range(1, 10)] private int damage = 1;
-
+    bool isDead = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +41,7 @@ public class HamburgerController : MonoBehaviour
         Debug.DrawRay(attackPlayer.position, attackPlayer.forward, Color.blue, 2f);
 
         //   rayHamburger = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
-        if (distance <= lookRadius)
+        if (distance <= lookRadius && !isDead)
         {
             hamHamburgerAnimator.SetBool("Chase", true);
             agentHam.SetDestination(target.position);
@@ -120,6 +120,7 @@ public class HamburgerController : MonoBehaviour
 
     private void Die()
     {
+        isDead = true;
         hamHamburgerAnimator.SetTrigger("Die");
         playerAnimator.SetBool("Shooting", false);
     }

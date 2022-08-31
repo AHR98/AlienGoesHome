@@ -60,13 +60,14 @@ public class SlikyController : MonoBehaviour
             this.gun.SetActive(true);
 
         }
-        
-        if (Input.GetKeyDown(KeyCode.J))
+        else
         {
-            //Shot
-            this.gun.SetActive(true);
+            this.gun.SetActive(false);
+
         }
-        if(Input.GetKeyDown(KeyCode.K))
+
+
+        if (Input.GetKeyDown(KeyCode.K))
         {
             animController.SetBool("Hypnosis", true);
             this.gun.SetActive(false);
