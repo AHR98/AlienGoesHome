@@ -6,11 +6,15 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public UIManager getPausePanel;
+    public GameObject MainMenuPanel;
+
     int time = 30;
     private void Awake()
     {
         if(instance == null)
             instance = this;
+     //   PauseGame();
+
     }
 
     private void Start()
@@ -25,9 +29,24 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if(!MainMenuPanel.activeInHierarchy)
         {
-            getPausePanel.ShowPause();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                PauseGame();
+                getPausePanel.ShowPause();
+            }
         }
+       
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 }
