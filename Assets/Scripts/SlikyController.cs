@@ -10,11 +10,13 @@ public class SlikyController : MonoBehaviour
     private Image healthBar;
     [SerializeField]
     private int currentHealth;
+    [SerializeField]
+    private GameObject target;
+
     public GameObject gun;
     private Animator animController;
     private float horizontalDirection;
     private float verticalDirection;
-
     private void OnEnable()
     {
         currentHealth = startingHealth;
@@ -38,6 +40,7 @@ public class SlikyController : MonoBehaviour
     void Start()
     {
         animController = GetComponent<Animator>();
+        
     }
 
     // Update is called once per frame
@@ -50,19 +53,21 @@ public class SlikyController : MonoBehaviour
             if (Input.GetKeyUp(KeyCode.Z))
             {
                 animController.SetTrigger("Dance");
-                this.gun.SetActive(false);
+                gun.SetActive(false);
 
             }
 
 
-        if (animController.GetBool("Shooting") == true)
+        if (animController.GetBool("Shooting"))
         {
-            this.gun.SetActive(true);
+            gun.SetActive(true);
+            target.SetActive(true);
 
         }
         else
         {
-            this.gun.SetActive(false);
+            gun.SetActive(false);
+            target.SetActive(false);
 
         }
 
@@ -70,7 +75,7 @@ public class SlikyController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             animController.SetBool("Hypnosis", true);
-            this.gun.SetActive(false);
+            gun.SetActive(false);
         }
         if (Input.GetKeyUp(KeyCode.K))
         {
@@ -114,13 +119,4 @@ public class SlikyController : MonoBehaviour
     }
 
 
-
-
-    private void OnCollisionEnter(Collision collision)
-    {
-
-        if (collision.collider.CompareTag("Door"))
-        {
-        }
-    }
 }
