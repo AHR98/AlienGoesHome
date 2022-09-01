@@ -18,15 +18,25 @@ public class Gun : MonoBehaviour
     private int maxBullets = 10;
     [SerializeField]
     private int currentBullets;
+    public GameObject bulletPrefab;
+    public float bulletSpeed = 10;
+    [SerializeField]
+    public Transform bulletSpawn;
+    bool isShootingSlinky = false;
     // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
-        if(timer >= fireRate)
+        isShootingSlinky = GetComponent<Animator>().GetBool("Shooting");       
+            
+            
+        if (timer >= fireRate)
         {
-            if(Input.GetButton("Fire1"))
+            if(Input.GetButton("Fire1") && isShootingSlinky)
             {
                 timer = 0;
+                var bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+                bullet.GetComponent<Rigidbody>().velocity = bulletSpawn.forward * bulletSpeed;
                 FireGun();
                 currentBullets--;
                 shootingBarChange((float)currentBullets / (float)maxBullets);
@@ -40,7 +50,10 @@ public class Gun : MonoBehaviour
         Ray ray = new Ray(firePoint.position, firePoint.forward);
         RaycastHit hitInfo;
 
+      
+
         shootParticle.Play();
+       
 
         if (Physics.Raycast(ray, out hitInfo, 100))
         {
