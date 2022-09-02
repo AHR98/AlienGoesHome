@@ -22,6 +22,10 @@ public class HamburgerController : MonoBehaviour
     private Transform attackPlayer;
     [SerializeField][Range(1, 10)] private int damage = 1;
     bool isDead = false;
+    private RaycastHit hitInfo;
+    private Ray ray;
+    private Quaternion quaternionRay;
+    private Vector3 distanceRay;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,15 +42,16 @@ public class HamburgerController : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(target.position, transform.position);
-        Debug.DrawRay(attackPlayer.position, attackPlayer.forward, Color.blue, 2f);
+        //Debug.DrawRay(attackPlayer.position, attackPlayer.forward, Color.blue, 2f);
 
+        
         //   rayHamburger = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
         if (distance <= lookRadius && !isDead)
         {
             hamHamburgerAnimator.SetBool("Chase", true);
             agentHam.SetDestination(target.position);
             playerAnimator.SetBool("Shooting", true);
-
+            
             //  hamHamburgerAnimator.SetFloat("Distance", distance);
 
             if (distance <= agentHam.stoppingDistance ) //Atack
@@ -80,12 +85,18 @@ public class HamburgerController : MonoBehaviour
 
     private void Attack(bool attack)
     {
-        Ray ray = new Ray(attackPlayer.position, attackPlayer.forward);
-        RaycastHit hitInfo;
+        //Make a 360 ray to make damage to slinky
+       
+        //Debug.DrawRay(attackPlayer.position, q * d, Color.green);
 
-        if (attack && timer >= 5f)
+
+        if (attack && timer >= 3f)
         {
             hamHamburgerAnimator.SetBool("Attack", attack);
+            quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);
+            distanceRay = transform.forward * 10;
+            ray = new Ray(attackPlayer.position, quaternionRay * distanceRay);
+          //  Debug.DrawRay(attackPlayer.position, quaternionRay * distanceRay, Color.green);
             if (Physics.Raycast(ray, out hitInfo, agentHam.stoppingDistance))
             {
                 if (hitInfo.transform.CompareTag("Player"))
