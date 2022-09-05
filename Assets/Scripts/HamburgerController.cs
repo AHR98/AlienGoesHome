@@ -73,22 +73,22 @@ public class HamburgerController : MonoBehaviour
         {
             Attack(false);
             hamHamburgerAnimator.SetBool("Chase", false);
-            playerAnimator.SetBool("Shooting", false);
+         //   playerAnimator.SetBool("Shooting", false);
 
 
         }
 
 
 
-
+        
     }
 
     private void Attack(bool attack)
     {
         //Make a 360 ray to make damage to slinky
-       
-        //Debug.DrawRay(attackPlayer.position, q * d, Color.green);
 
+        //Debug.DrawRay(attackPlayer.position, q * d, Color.green);
+        transform.LookAt(target); //look at Slinky
 
         if (attack && timer >= 3f)
         {
@@ -123,11 +123,7 @@ public class HamburgerController : MonoBehaviour
     }
    
 
-    //void OnDrawGizmosSelected()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(transform.position, lookRadius);
-    //}
+   
 
     private void Die()
     {
