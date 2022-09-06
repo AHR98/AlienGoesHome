@@ -23,6 +23,8 @@ public class Gun : MonoBehaviour
     [SerializeField]
     public Transform bulletSpawn;
     bool isShootingSlinky = false;
+    private EnemyController enemyController;
+
     // Update is called once per frame
     void Update()
     {
@@ -60,10 +62,11 @@ public class Gun : MonoBehaviour
             if (hitInfo.transform.CompareTag("Enemy"))
             {
                 //Destroy(hitInfo.collider.gameObject);
-                var healthEnemy = hitInfo.collider.GetComponent<HamburgerController>();
-                if (healthEnemy != null)
+                var enemyAnimator = hitInfo.collider.GetComponent<Animator>();
+                if (enemyAnimator != null)
                 {
-                    healthEnemy.TakeDamage(damage);
+                    enemyController = hitInfo.collider.GetComponent<EnemyController>();
+                    enemyController.TakeDamage(damage, enemyAnimator, GetComponent<Animator>());
                     
                 }
             }

@@ -5,12 +5,6 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 public class PizzaController : MonoBehaviour
 {
-    [SerializeField]
-    private int startingHealth = 10;
-    [SerializeField]
-    private int currentHealth;
-    [SerializeField]
-    private Image healthBar;
     Animator animatorPizza;
     [SerializeField]
     private float timer;
@@ -36,11 +30,13 @@ public class PizzaController : MonoBehaviour
     private bool hasAttacked = false;
     AnimatorStateInfo animStateInfo;
     public float NTime;
+    private EnemyController enemyController;
+
     // Start is called before the first frame update
     void Start()
     {
         target = PlayerManager.instance.playerSlinky.transform;
-        // healthBar = GetComponent<Image>(); ;
+        enemyController = GetComponent<EnemyController>();
         pizzaAgent = GetComponent<NavMeshAgent>();
         animatorPizza = GetComponent<Animator>();
         slinkyPlayer = PlayerManager.instance.playerSlinky.gameObject;
@@ -52,6 +48,8 @@ public class PizzaController : MonoBehaviour
     {
 
         float distance = Vector3.Distance(target.position, transform.position);
+        isDead = enemyController.getDieInfo();
+
         //   rayHamburger = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
         if (distance <= lookRadius && !isDead)
         {
@@ -155,44 +153,5 @@ public class PizzaController : MonoBehaviour
         
         return animationFinished;
     }
-    private void Die()
-    {
-        isDead = true;
-        animatorPizza.SetTrigger("Die");
-        slinkyAnimator.SetBool("Shooting", false);
-    }
-
-    private void OnEnable()
-    {
-        currentHealth = startingHealth;
-    }
-
-    public void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-        healthChange((float)currentHealth / (float)startingHealth);
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    private void healthChange(float _health)
-    {
-        StartCoroutine(changeHealthBar(_health));
-    }
-
-    private IEnumerator changeHealthBar(float _health)
-    {
-        float preHealth = healthBar.fillAmount;
-        float elapsed = 0f;
-        while (elapsed < 0.2f)
-        {
-            elapsed += Time.deltaTime;
-            healthBar.fillAmount = Mathf.Lerp(preHealth, _health, elapsed / 0.2f);
-            yield return null;
-        }
-
-        healthBar.fillAmount = _health;
-    }
+    
 }
