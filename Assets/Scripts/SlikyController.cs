@@ -99,6 +99,15 @@ public class SlikyController : MonoBehaviour
         }
     }
 
+    public void IncreaseHealth(int increase)
+    {
+        if(currentHealth <= startingHealth)
+        {
+            currentHealth += increase;
+            healthChange((float)currentHealth / (float)startingHealth);
+        }
+      
+    }
     private void healthChange(float _health)
     {
         StartCoroutine(changeHealthBar(_health));
