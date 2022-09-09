@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class Gun : MonoBehaviour
 {
     [SerializeField]
+    private GameObject pressJ;
+    [SerializeField]
     [Range(0.5f, 1.5f)] private float fireRate = 1;
     [SerializeField] [Range(1, 10)] private int damage = 1;
     private float timer;
@@ -34,15 +36,30 @@ public class Gun : MonoBehaviour
             
         if (timer >= fireRate)
         {
-            if(Input.GetButton("Fire1") && isShootingSlinky)
+            if(isShootingSlinky)
             {
-                timer = 0;
-                var bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
-                bullet.GetComponent<Rigidbody>().velocity = bulletSpawn.forward * bulletSpeed;
-                FireGun();
-                currentBullets--;
-                shootingBarChange((float)currentBullets / (float)maxBullets);
+                pressJ.SetActive(true);
+                if (Input.GetButton("Fire1"))
+                {
+                    timer = 0;
+                    var bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+                    bullet.GetComponent<Rigidbody>().velocity = bulletSpawn.forward * bulletSpeed;
+                    FireGun();
+                    currentBullets--;
+                    shootingBarChange((float)currentBullets / (float)maxBullets);
+                }
             }
+            else
+            {
+                pressJ.SetActive(false);
+
+            }
+
+        }
+        else
+        {
+            pressJ.SetActive(false);
+
         }
     }
 
@@ -83,7 +100,19 @@ public class Gun : MonoBehaviour
     {
         StartCoroutine(shootingBar(_bulletsDamage));
     }
+    public void increaseBulletsBar(int _bulletsIncrease)
+    {
+        if(currentBullets < maxBullets)
+        {
+            if ((currentBullets + _bulletsIncrease) > maxBullets) //Si lo suma y es mayor a el máximo dejar el máximo
+                currentBullets = maxBullets;
+            else
+                currentBullets += _bulletsIncrease;
 
+            StartCoroutine(shootingBar((float)currentBullets / (float)maxBullets));
+             
+        }
+    }
     private IEnumerator shootingBar(float _bulletsDamage)
     {
         float preHealth = gunPower.fillAmount;

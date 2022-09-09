@@ -12,7 +12,7 @@ public class SlikyController : MonoBehaviour
     private int currentHealth;
     [SerializeField]
     private GameObject target;
-
+   
     public GameObject gun;
     private Animator animController;
     private float horizontalDirection;
@@ -101,9 +101,12 @@ public class SlikyController : MonoBehaviour
 
     public void IncreaseHealth(int increase)
     {
-        if(currentHealth <= startingHealth)
+        if(currentHealth < startingHealth)
         {
-            currentHealth += increase;
+            if ((currentHealth + increase) == startingHealth)
+                currentHealth = startingHealth;
+            else
+                currentHealth += increase;
             healthChange((float)currentHealth / (float)startingHealth);
         }
       
