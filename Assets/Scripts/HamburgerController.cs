@@ -20,6 +20,7 @@ public class HamburgerController : MonoBehaviour
     private Quaternion quaternionRay;
     private Vector3 distanceRay;
     private EnemyController enemyController;
+    private bool chaseSlinky = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,8 +40,20 @@ public class HamburgerController : MonoBehaviour
         //Debug.DrawRay(attackPlayer.position, attackPlayer.forward, Color.blue, 2f);
 
         isDead = enemyController.getDieInfo();
+        //Check if the player is near before the chase
+        quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);
+        distanceRay = transform.forward * 10;
+        ray = new Ray(attackPlayer.position, quaternionRay * distanceRay);
+        if (Physics.Raycast(ray, out hitInfo, lookRadius))
+        {
+            if (hitInfo.transform.CompareTag("Player"))
+            {
+                //Debug.Log("Es slinky!");
+                chaseSlinky = true;
+            }
+        }
         //   rayHamburger = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
-        if (distance <= lookRadius && !isDead)
+        if (distance <= lookRadius && !isDead && chaseSlinky)
         {
             hamHamburgerAnimator.SetBool("Chase", true);
             agentHam.SetDestination(target.position);

@@ -19,6 +19,8 @@ public class PizzaController : MonoBehaviour
     bool isDead = false;
     private RaycastHit hitInfo;
     private Ray ray;
+    private Quaternion quaternionRay;
+    private Vector3 distanceRay;
 
     [SerializeField]
     [Range(0.5f, 1.5f)] private float fireRate = 1;
@@ -31,6 +33,7 @@ public class PizzaController : MonoBehaviour
     AnimatorStateInfo animStateInfo;
     public float NTime;
     private EnemyController enemyController;
+    private bool chaseSlinky = false;
 
     // Start is called before the first frame update
     void Start()
@@ -50,8 +53,19 @@ public class PizzaController : MonoBehaviour
         float distance = Vector3.Distance(target.position, transform.position);
         isDead = enemyController.getDieInfo();
         //raycast o sphercast choque con el personaje <- mejora
-        //   rayHamburger = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
-        if (distance <= lookRadius && !isDead)
+        quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);
+        distanceRay = transform.forward * 10;
+        ray = new Ray(attackPlayer.position, quaternionRay * distanceRay);
+        if (Physics.Raycast(ray, out hitInfo, lookRadius))
+        {
+            if (hitInfo.transform.CompareTag("Player"))
+            {
+                //Debug.Log("Es slinky!");
+                chaseSlinky = true;
+            }
+        }
+
+        if (distance <= lookRadius && !isDead && chaseSlinky)
         {
             slinkyAnimator.SetBool("Shooting", true);
             animatorPizza.SetBool("Chase", true);

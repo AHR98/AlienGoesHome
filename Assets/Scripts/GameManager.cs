@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private Light lightLevel1;
+    [SerializeField]
+    private Light lightLevel2;
     public static GameManager instance;
     public UIManager getPausePanel;
     public GameObject MainMenuPanel;

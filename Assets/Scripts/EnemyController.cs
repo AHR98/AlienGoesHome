@@ -50,6 +50,7 @@ public class EnemyController : MonoBehaviour
         isDead = true;
         enemyAnimator.SetTrigger("Die");
         slinkyAnimator.SetBool("Shooting", false);
+        Destroy(gameObject, 3f);
     }
 
     public bool getDieInfo()
