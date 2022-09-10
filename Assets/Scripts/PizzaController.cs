@@ -49,7 +49,7 @@ public class PizzaController : MonoBehaviour
 
         float distance = Vector3.Distance(target.position, transform.position);
         isDead = enemyController.getDieInfo();
-
+        //raycast o sphercast choque con el personaje <- mejora
         //   rayHamburger = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
         if (distance <= lookRadius && !isDead)
         {

@@ -12,7 +12,6 @@ public class SlikyController : MonoBehaviour
     private int currentHealth;
     [SerializeField]
     private GameObject target;
-   
     public GameObject gun;
     private Animator animController;
     private float horizontalDirection;

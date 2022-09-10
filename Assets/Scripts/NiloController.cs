@@ -12,7 +12,7 @@ public class NiloController : MonoBehaviour
     public float lookRadius = 3f;
     NavMeshAgent agentNilo;
     Transform target;
-    bool followSlinky = false;
+    public bool followSlinky = false;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +44,7 @@ public class NiloController : MonoBehaviour
 
         if (followSlinky)
         {
+           
             agentNilo.SetDestination(target.position);
             niloAnimnator.SetBool("Walk", true);
             if (distance <= agentNilo.stoppingDistance)
