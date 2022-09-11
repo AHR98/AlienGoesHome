@@ -38,7 +38,6 @@ public class HamburgerController : MonoBehaviour
     {
         float distance = Vector3.Distance(target.position, transform.position);
         //Debug.DrawRay(attackPlayer.position, attackPlayer.forward, Color.blue, 2f);
-
         isDead = enemyController.getDieInfo();
         //Check if the player is near before the chase
         quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);

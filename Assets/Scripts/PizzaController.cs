@@ -49,7 +49,6 @@ public class PizzaController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         float distance = Vector3.Distance(target.position, transform.position);
         isDead = enemyController.getDieInfo();
         //raycast o sphercast choque con el personaje <- mejora
@@ -167,5 +166,6 @@ public class PizzaController : MonoBehaviour
         
         return animationFinished;
     }
+
     
 }

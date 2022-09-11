@@ -16,6 +16,13 @@ public class SlikyController : MonoBehaviour
     private Animator animController;
     private float horizontalDirection;
     private float verticalDirection;
+    public float jumpingForce = 8f;
+    public Rigidbody rigidBody;
+    private CharacterController characterController;
+    [SerializeField]
+    private bool isTouchingFloor = false;
+    private Vector3 velocity;
+    private CapsuleCollider capsuleCollider;
     private void OnEnable()
     {
         currentHealth = startingHealth;
@@ -39,14 +46,24 @@ public class SlikyController : MonoBehaviour
     void Start()
     {
         animController = GetComponent<Animator>();
-        
+        rigidBody = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Vector3 move;
+        
         horizontalDirection = Input.GetAxis("Horizontal");
         verticalDirection = Input.GetAxis("Vertical");
+        move = transform.right * horizontalDirection + transform.forward * verticalDirection;
+
+        characterController.Move(move * Time.deltaTime);
+        animController.SetBool("Jump", false);
+        animController.SetBool("Hypnosis", false);
+
         //Special Dance
         if (Input.GetKey(KeyCode.LeftShift))
             if (Input.GetKeyUp(KeyCode.Z))
@@ -76,17 +93,37 @@ public class SlikyController : MonoBehaviour
             animController.SetBool("Hypnosis", true);
             gun.SetActive(false);
         }
-        if (Input.GetKeyUp(KeyCode.K))
-        {
-            animController.SetBool("Hypnosis", false);
-        }
         
+        if (Input.GetKeyDown(KeyCode.Space) && isTouchingFloor)
+        {
+            animController.SetBool("Jump", true);
+            isTouchingFloor = false; //Bcs he is jumping
+
+            velocity.y = jumpingForce;
+
+        }
+    
+
+
+        velocity.y += -9.81f * Time.deltaTime; //Así siempre lo ancla hacia abajo, hacia la tierra
+        characterController.Move(velocity * Time.deltaTime);
 
         //Walk-run
         animController.SetFloat("Speed", verticalDirection);
         animController.SetFloat("Direction", horizontalDirection);
-     
 
+
+
+
+
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.transform.gameObject.CompareTag("Floor"))
+        {
+            //Slinky is touching the floor
+            isTouchingFloor = true;
+        }
     }
     public void TakeDamage(int damage)
     {
