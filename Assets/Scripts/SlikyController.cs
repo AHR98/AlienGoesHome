@@ -12,33 +12,35 @@ public class SlikyController : MonoBehaviour
     private int currentHealth;
     [SerializeField]
     private GameObject target;
+    [SerializeField]
+    private GameObject niloAnim;
     public GameObject gun;
     private Animator animController;
     private float horizontalDirection;
     private float verticalDirection;
-    public float jumpingForce = 8f;
+    public float jumpingForce = 8.5f;
     public Rigidbody rigidBody;
     private CharacterController characterController;
-    [SerializeField]
     private bool isTouchingFloor = false;
     private Vector3 velocity;
-    private CapsuleCollider capsuleCollider;
+    private bool level1 = false;
     private void OnEnable()
     {
         currentHealth = startingHealth;
     }
 
-    public void TakeDamage()
-    {
-        currentHealth -= startingHealth;
-        if(currentHealth <= 0)
-        {
-            Die();
-        }
-    }
+    //public void TakeDamage()
+    //{
+    //    currentHealth -= startingHealth;
+    //    if(currentHealth <= 0)
+    //    {
+    //        Die();
+    //    }
+    //}
 
     private void Die()
     {
+        niloAnim.GetComponent<Animator>().SetTrigger("SlinkyDied");
         animController.SetTrigger("Die");
     }
 
@@ -48,19 +50,25 @@ public class SlikyController : MonoBehaviour
         animController = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     // Update is called once per frame
     void Update()
     {
         Vector3 move;
-        
+        velocity.x = 0;
+
+        velocity.z = 0;
         horizontalDirection = Input.GetAxis("Horizontal");
         verticalDirection = Input.GetAxis("Vertical");
-        move = transform.right * horizontalDirection + transform.forward * verticalDirection;
+        //Walk-run
+        animController.SetFloat("Speed", verticalDirection);
+        animController.SetFloat("Direction", horizontalDirection);
 
-        characterController.Move(move * Time.deltaTime);
+        move = transform.right * horizontalDirection + transform.forward * verticalDirection;
+        //Debug.Log("Move " + move.ToString());
+
+        //characterController.Move(move  * Time.deltaTime);
         animController.SetBool("Jump", false);
         animController.SetBool("Hypnosis", false);
 
@@ -73,6 +81,22 @@ public class SlikyController : MonoBehaviour
 
             }
 
+        if (Input.GetKeyDown(KeyCode.Space) && isTouchingFloor)
+        {
+            animController.SetBool("Jump", true);
+            isTouchingFloor = false; //Bcs he is jumping
+
+            velocity.y = jumpingForce;
+            //transform.position += velocity;
+
+        }
+        else if(!isTouchingFloor && !level1)
+        {
+            velocity.z = move.z * 3;
+            velocity.x = move.x * 3;
+
+        }
+       
 
         if (animController.GetBool("Shooting"))
         {
@@ -93,24 +117,15 @@ public class SlikyController : MonoBehaviour
             animController.SetBool("Hypnosis", true);
             gun.SetActive(false);
         }
+
+
+
         
-        if (Input.GetKeyDown(KeyCode.Space) && isTouchingFloor)
-        {
-            animController.SetBool("Jump", true);
-            isTouchingFloor = false; //Bcs he is jumping
-
-            velocity.y = jumpingForce;
-
-        }
-    
-
 
         velocity.y += -9.81f * Time.deltaTime; //Así siempre lo ancla hacia abajo, hacia la tierra
         characterController.Move(velocity * Time.deltaTime);
 
-        //Walk-run
-        animController.SetFloat("Speed", verticalDirection);
-        animController.SetFloat("Direction", horizontalDirection);
+   
 
 
 
@@ -123,6 +138,13 @@ public class SlikyController : MonoBehaviour
         {
             //Slinky is touching the floor
             isTouchingFloor = true;
+            level1 = false;
+        }
+        if(collision.transform.gameObject.CompareTag("FloorLevel1"))
+        {
+            level1 = true;
+            isTouchingFloor = false;
+
         }
     }
     public void TakeDamage(int damage)
