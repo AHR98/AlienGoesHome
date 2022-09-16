@@ -12,6 +12,7 @@ TagManager:
   - Bullet
   - Floor
   - FloorLevel1
+  - Jump
   layers:
   - Default
   - TransparentFX

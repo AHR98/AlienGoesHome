@@ -25,11 +25,7 @@ public class NiloController : MonoBehaviour
         playerAnimator = slinkyPlayer.GetComponent<Animator>();
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, lookRadius);
-    }
+
 
     // Update is called once per frame
     void Update()
