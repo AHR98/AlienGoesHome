@@ -56,6 +56,20 @@ public class DoorAnimation : MonoBehaviour
                     anim.SetBool("Opened", !opened);
                 }
             }
+            else if (doorhit.transform.CompareTag("SurpriseBox"))
+            {
+
+                pressKeyF.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    
+                    anim = doorhit.transform.GetComponentInParent<Animator>();
+
+                    anim.SetTrigger("Opened");
+                }
+
+
+            }
             else
             {
                 pressKeyF.SetActive(false);

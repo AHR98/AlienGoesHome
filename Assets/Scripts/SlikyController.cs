@@ -18,37 +18,35 @@ public class SlikyController : MonoBehaviour
     private Animator animController;
     private float horizontalDirection;
     private float verticalDirection;
-    public float jumpingForce = 8.5f;
-    public Rigidbody rigidBody;
+    private float jumpingForce = 8.5f;
     private CharacterController characterController;
     private bool isTouchingFloor = false;
     private Vector3 velocity;
     private bool level1 = false;
+    public bool isDead = false;
+  
     private void OnEnable()
     {
         currentHealth = startingHealth;
     }
 
-    //public void TakeDamage()
-    //{
-    //    currentHealth -= startingHealth;
-    //    if(currentHealth <= 0)
-    //    {
-    //        Die();
-    //    }
-    //}
 
     private void Die()
     {
         niloAnim.GetComponent<Animator>().SetTrigger("SlinkyDied");
         animController.SetTrigger("Die");
+        characterController.Move(velocity * Time.deltaTime);
+        isDead = true;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        currentHealth = startingHealth;
+        isDead = false;
+        isTouchingFloor = false;
+        level1 = false;
         animController = GetComponent<Animator>();
-        rigidBody = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
     }
 

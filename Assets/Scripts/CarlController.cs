@@ -23,8 +23,7 @@ public class CarlController : MonoBehaviour
     private bool chaseSlinky = false;
     [SerializeField]
     private GameObject carlIsJumping;
-    private CarlJump carlJump;
-    private bool isTouchingFloor = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +33,6 @@ public class CarlController : MonoBehaviour
         slinkyPlayer = PlayerManager.instance.playerSlinky.gameObject;
         playerAnimator = slinkyPlayer.GetComponent<Animator>();
         enemyController = GetComponent<EnemyController>();
-        isTouchingFloor = true;
     }
 
     // Update is called once per frame
@@ -64,21 +62,6 @@ public class CarlController : MonoBehaviour
             playerAnimator.SetBool("Shooting", true);
             agentCarl.SetDestination(target.position);
             carlAnimator.SetFloat("Direction", 1f);
-
-            //if (isTouchingFloor)
-            //{
-            //    carlAnimator.SetBool("Jump", false);
-            //}
-            //else
-            //{
-            //    carlAnimator.SetFloat("Direction", 0f);
-            //    carlAnimator.SetBool("Jump", true);
-
-            //}
-
-
-
-
 
             if (distance <= agentCarl.stoppingDistance) //Atack
             {
@@ -130,7 +113,6 @@ public class CarlController : MonoBehaviour
             {
                 if (hitInfo.transform.CompareTag("Player"))
                 {
-                    //Destroy(hitInfo.collider.gameObject);
                     var healthSlinky = hitInfo.collider.GetComponent<SlikyController>();
                     if (healthSlinky != null)
                     {

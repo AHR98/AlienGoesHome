@@ -8,13 +8,14 @@ public class UIManager : MonoBehaviour
     public GameObject PausePanel;
     public GameObject SettingsPanel;
     public GameObject MainMenuPanel;
+    public GameObject GameOverPanel;
     private void ClearPanels()
     {
         PausePanel.SetActive(false);
         GamePanel.SetActive(false);
         SettingsPanel.SetActive(false);
         MainMenuPanel.SetActive(false);
-
+        GameOverPanel.SetActive(false);
     }
 
     public void ShowPause()
@@ -41,6 +42,10 @@ public class UIManager : MonoBehaviour
         MainMenuPanel.SetActive(true);
     }
 
-    
+    public void ShowGameOverPanel()
+    {
+        ClearPanels();
+        GameOverPanel.SetActive(true);
+    }
 
 }

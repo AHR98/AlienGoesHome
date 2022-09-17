@@ -13,6 +13,7 @@ TagManager:
   - Floor
   - FloorLevel1
   - Jump
+  - SurpriseBox
   layers:
   - Default
   - TransparentFX

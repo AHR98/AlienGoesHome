@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,10 +9,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Light lightLevel2;
     public static GameManager instance;
-    public UIManager getPausePanel;
+    public UIManager getPanel;
     public GameObject MainMenuPanel;
-
-    int time = 30;
+    private GameObject slinkyPlayer;
+    private SlikyController slikyController;
+    
     private void Awake()
     {
         if(instance == null)
@@ -23,24 +24,34 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(CountDownRutine());
+        slinkyPlayer = PlayerManager.instance.playerSlinky.gameObject;
+       // StartCoroutine(CountDownRutine());
     }
     IEnumerator CountDownRutine()
     {
-        yield return new WaitForSeconds(1);
+        
+        yield return new WaitForSeconds(6);
+        PauseGame();
+        getPanel.ShowGameOverPanel();
 
-        time--;
     }
     private void Update()
     {
-        if(!MainMenuPanel.activeInHierarchy)
+        slikyController = slinkyPlayer.GetComponent<SlikyController>();
+        if(slikyController.isDead )
+        {
+            StartCoroutine(CountDownRutine());
+            
+        }
+        else if (!MainMenuPanel.activeInHierarchy)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 PauseGame();
-                getPausePanel.ShowPause();
+                getPanel.ShowPause();
             }
         }
+        
        
     }
 
@@ -52,5 +63,10 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         Time.timeScale = 1;
+    }
+    public void ResetTheGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        ResumeGame();
     }
 }
