@@ -7,12 +7,12 @@ public class CarlJump : MonoBehaviour
     [SerializeField]
     private bool isTouchingFloor = true;
 
-    private void FixedUpdate()
-    {
+    //private void FixedUpdate()
+    //{
 
-    }
-    public bool getTouchingFloor()
-    {
-        return isTouchingFloor;
-    }
+    //}
+    //public bool getTouchingFloor()
+    //{
+    //    return isTouchingFloor;
+    //}
 }

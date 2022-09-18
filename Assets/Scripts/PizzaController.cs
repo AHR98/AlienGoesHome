@@ -59,7 +59,6 @@ public class PizzaController : MonoBehaviour
         {
             if (hitInfo.transform.CompareTag("Player"))
             {
-                //Debug.Log("Es slinky!");
                 chaseSlinky = true;
             }
         }
@@ -81,11 +80,11 @@ public class PizzaController : MonoBehaviour
                 
 
             }
-            else
-            {
-                animatorPizza.SetBool("Chase", true);
-                Attack(false);
-            }
+            //else
+            //{
+            //    animatorPizza.SetBool("Chase", true);
+            //    Attack(false);
+            //}
         }
         else
         {

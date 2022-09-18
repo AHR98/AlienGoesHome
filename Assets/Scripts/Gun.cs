@@ -44,7 +44,8 @@ public class Gun : MonoBehaviour
                     timer = 0;
                     var bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
                     bullet.GetComponent<Rigidbody>().velocity = bulletSpawn.forward * bulletSpeed;
-                    FireGun();
+                    shootParticle.Play();
+                    FireGun(damage);
                     currentBullets--;
                     shootingBarChange((float)currentBullets / (float)maxBullets);
                 }
@@ -63,27 +64,21 @@ public class Gun : MonoBehaviour
         }
     }
 
-    private void FireGun()
+    public void FireGun(int _damage)
     {
         //Debug.DrawRay(firePoint.position, firePoint.forward * 100, Color.red, 2f);
         Ray ray = new Ray(firePoint.position, firePoint.forward);
         RaycastHit hitInfo;
 
-      
-
-        shootParticle.Play();
-       
-
         if (Physics.Raycast(ray, out hitInfo, 100))
         {
             if (hitInfo.transform.CompareTag("Enemy"))
             {
-                //Destroy(hitInfo.collider.gameObject);
                 var enemyAnimator = hitInfo.collider.GetComponent<Animator>();
                 if (enemyAnimator != null)
                 {
                     enemyController = hitInfo.collider.GetComponent<EnemyController>();
-                    enemyController.TakeDamage(damage, enemyAnimator, GetComponent<Animator>());
+                    enemyController.TakeDamage(_damage, enemyAnimator, GetComponent<Animator>());
                     
                 }
             }

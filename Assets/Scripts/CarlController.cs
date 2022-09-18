@@ -66,7 +66,6 @@ public class CarlController : MonoBehaviour
             if (distance <= agentCarl.stoppingDistance) //Atack
             {
                 carlAnimator.SetFloat("Direction", 0f);
-                
                 timer += Time.deltaTime;
 
                 Attack(true);

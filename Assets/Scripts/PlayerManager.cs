@@ -8,7 +8,6 @@ public class PlayerManager : MonoBehaviour
     //Awake
     #region Singleton
     public static PlayerManager instance;
-
     void Awake()
     {
         instance = this;
@@ -16,5 +15,5 @@ public class PlayerManager : MonoBehaviour
     #endregion
     public GameObject playerSlinky;
 
-   
+
 }

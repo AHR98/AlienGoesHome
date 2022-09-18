@@ -5,15 +5,22 @@ using UnityEngine.UI;
 public class SlikyController : MonoBehaviour
 {
     [SerializeField]
+    private GameObject pressKeyK;
+    [SerializeField]
     private int startingHealth = 50;
     [SerializeField]
     private Image healthBar;
     [SerializeField]
     private int currentHealth;
+    private int hypnosis = 20;
+    private int currentHypnosis;
+    private int damageHypnosis = 5;
     [SerializeField]
     private GameObject target;
     [SerializeField]
     private GameObject niloAnim;
+    [SerializeField]
+    private Image hypnosisBar;
     public GameObject gun;
     private Animator animController;
     private float horizontalDirection;
@@ -24,10 +31,13 @@ public class SlikyController : MonoBehaviour
     private Vector3 velocity;
     private bool level1 = false;
     public bool isDead = false;
-  
+
+    [SerializeField]
+    private ParticleSystem hypnosisParticle;
     private void OnEnable()
     {
         currentHealth = startingHealth;
+        currentHypnosis = hypnosis;
     }
 
 
@@ -35,7 +45,7 @@ public class SlikyController : MonoBehaviour
     {
         niloAnim.GetComponent<Animator>().SetTrigger("SlinkyDied");
         animController.SetTrigger("Die");
-        characterController.Move(velocity * Time.deltaTime);
+        //characterController.Move(velocity * Time.deltaTime);
         isDead = true;
     }
 
@@ -46,8 +56,10 @@ public class SlikyController : MonoBehaviour
         isDead = false;
         isTouchingFloor = false;
         level1 = false;
+        currentHypnosis = hypnosis;
         animController = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
+
     }
 
     // Update is called once per frame
@@ -101,38 +113,38 @@ public class SlikyController : MonoBehaviour
             gun.SetActive(true);
             target.SetActive(true);
 
+            if (!level1) //Level2
+            {
+                pressKeyK.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    hypnosisParticle.transform.gameObject.SetActive(true);
+                    AttackHypnosis();
+                }
+
+            }
+
         }
         else
         {
             gun.SetActive(false);
             target.SetActive(false);
+            pressKeyK.SetActive(false);
+            hypnosisParticle.transform.gameObject.SetActive(false);
 
         }
 
 
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            animController.SetBool("Hypnosis", true);
-            gun.SetActive(false);
-        }
 
-
-
-        
 
         velocity.y += -9.81f * Time.deltaTime; //Así siempre lo ancla hacia abajo, hacia la tierra
         characterController.Move(velocity * Time.deltaTime);
-
-   
-
-
-
 
 
     }
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.transform.gameObject.CompareTag("Floor"))
+        if(collision.transform.gameObject.CompareTag("Floor")) //Level2
         {
             //Slinky is touching the floor
             isTouchingFloor = true;
@@ -145,16 +157,35 @@ public class SlikyController : MonoBehaviour
 
         }
     }
+    private void AttackHypnosis()
+    {
+       
+        if (currentHypnosis != 0)
+        {
+            animController.SetBool("Hypnosis", true);
+            hypnosisParticle.Play();
+            currentHypnosis -= damageHypnosis;
+            hypnosisChange((float)currentHypnosis / (float)hypnosis);
+            GetComponent<Gun>().FireGun(damageHypnosis);
+        }
+        
+    }
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         healthChange((float)currentHealth / (float)startingHealth);
+        StartCoroutine(pauseGame());
         if (currentHealth <= 0)
         {
             Die();
         }
     }
-
+    private IEnumerator pauseGame()
+    {
+        Time.timeScale = 0.2f;
+        yield return new WaitForSeconds(0.3f);
+        GameManager.instance.ResumeGame();
+    }
     public void IncreaseHealth(int increase)
     {
         if(currentHealth < startingHealth)
@@ -167,11 +198,27 @@ public class SlikyController : MonoBehaviour
         }
       
     }
+    public void IncreaseHypnosis(int increase)
+    {
+        if (currentHypnosis < hypnosis)
+        {
+            if ((currentHypnosis + increase) == hypnosis)
+                currentHypnosis = hypnosis;
+            else
+                currentHypnosis += increase;
+            hypnosisChange((float)currentHypnosis / (float)hypnosis);
+        }
+
+    }
     private void healthChange(float _health)
     {
         StartCoroutine(changeHealthBar(_health));
     }
 
+    private void hypnosisChange(float _hpynosis)
+    {
+        StartCoroutine(changeHpynosisBar(_hpynosis));
+    }
     private IEnumerator changeHealthBar(float _health)
     {
         float preHealth = healthBar.fillAmount;
@@ -185,6 +232,18 @@ public class SlikyController : MonoBehaviour
 
         healthBar.fillAmount = _health;
     }
+    private IEnumerator changeHpynosisBar(float _hpynosis)
+    {
+        float preHpynosis = hypnosisBar.fillAmount;
+        float elapsed = 0f;
+        while (elapsed < 0.2f)
+        {
+            elapsed += Time.deltaTime;
+            hypnosisBar.fillAmount = Mathf.Lerp(preHpynosis, _hpynosis, elapsed / 0.2f);
+            yield return null;
+        }
 
+        hypnosisBar.fillAmount = _hpynosis;
+    }
 
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class DoorAnimation : MonoBehaviour
 {
     [SerializeField]
@@ -9,7 +9,7 @@ public class DoorAnimation : MonoBehaviour
     public Transform PlayerCamera;
     [Header("MaxDistance you can open or close the door.")]
     public float MaxDistance = 3;
-
+    
     private bool opened = false;
     private Animator anim;
     [SerializeField]
@@ -56,29 +56,16 @@ public class DoorAnimation : MonoBehaviour
                     anim.SetBool("Opened", !opened);
                 }
             }
-            else if (doorhit.transform.CompareTag("SurpriseBox"))
-            {
-
-                pressKeyF.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.F))
-                {
-                    
-                    anim = doorhit.transform.GetComponentInParent<Animator>();
-
-                    anim.SetTrigger("Opened");
-                }
 
 
-            }
-            else
-            {
-                pressKeyF.SetActive(false);
-
-            }
+        }
+        else
+        {
+            pressKeyF.SetActive(false);
         }
     }
 
-
+    
     void getNilo()
     {
         niloFounded = niloScript.GetComponent<NiloController>().followSlinky;
