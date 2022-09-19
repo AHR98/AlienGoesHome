@@ -21,8 +21,7 @@ public class CarlController : MonoBehaviour
     private Vector3 distanceRay;
     private EnemyController enemyController;
     private bool chaseSlinky = false;
-    [SerializeField]
-    private GameObject carlIsJumping;
+ 
 
     // Start is called before the first frame update
     void Start()
@@ -39,8 +38,7 @@ public class CarlController : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(target.position, transform.position);
-        //carlJump = carlIsJumping.GetComponent<CarlJump>();
-        //isTouchingFloor = carlJump.getTouchingFloor();
+      
         //Check if the enemy is dead
         isDead = enemyController.getDieInfo();
         //Check if the player is near before the chase
@@ -57,7 +55,7 @@ public class CarlController : MonoBehaviour
         
        
 
-        if (distance <= lookRadius && !isDead && chaseSlinky )
+        if (distance <= lookRadius && !isDead  )
         {
             playerAnimator.SetBool("Shooting", true);
             agentCarl.SetDestination(target.position);
