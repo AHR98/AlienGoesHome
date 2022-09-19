@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject MainMenuPanel;
     private GameObject slinkyPlayer;
     private SlikyController slikyController;
-    
+    private int level = 0;
     private void Awake()
     {
         if(instance == null)
@@ -68,5 +68,23 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         ResumeGame();
+    }
+    public int getGameLevel()
+    {
+        return level;
+    }
+     
+    public void setGameLevel(int _level)
+    {
+        level = _level;
+    }
+    public enum GameLevel
+    {
+        Level1,
+        Level2,
+        Fight,
+        MainMenu,
+        GameOver
+
     }
 }

@@ -1,6 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.Audio;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,6 +11,10 @@ public class UIManager : MonoBehaviour
     public GameObject SettingsPanel;
     public GameObject MainMenuPanel;
     public GameObject GameOverPanel;
+
+    public AudioMixer audioMixer;
+    public Slider SFXSlider;
+    public Slider musicSlider;
     private void ClearPanels()
     {
         PausePanel.SetActive(false);
@@ -47,5 +53,31 @@ public class UIManager : MonoBehaviour
         ClearPanels();
         GameOverPanel.SetActive(true);
     }
+    public void ApplyAudioMixerSettings()
+    {
+        float masterVolume = 0f;
 
+       
+        if (audioMixer.GetFloat("MusicVolume", out masterVolume))
+        {
+            musicSlider.value = masterVolume;
+        }
+        if (audioMixer.GetFloat("SFXVolume", out masterVolume))
+        {
+            SFXSlider.value = masterVolume;
+        }
+    }
+
+
+    public void OnGlobalMusicChange(float globalMusic)
+    {
+        audioMixer.SetFloat("MusicVolume", globalMusic);
+
+    }
+
+    public void OnGlobalSoundFXChange(float globalSoundEffects)
+    {
+        audioMixer.SetFloat("SFXVolume", globalSoundEffects);
+
+    }
 }

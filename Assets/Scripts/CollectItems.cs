@@ -21,6 +21,7 @@ public class CollectItems : MonoBehaviour
     private void getItems()
     {
         Ray ray = new Ray(firePoint.position, firePoint.forward);
+        Debug.DrawRay(firePoint.position, firePoint.forward, Color.red);
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo, 3))
         {

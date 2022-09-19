@@ -141,8 +141,17 @@ public class SlikyController : MonoBehaviour
 
         velocity.y += -9.81f * Time.deltaTime; //Así siempre lo ancla hacia abajo, hacia la tierra
         characterController.Move(velocity * Time.deltaTime);
+        setGameManagerLevel();
 
-
+    }
+    private void setGameManagerLevel()
+    {
+        if(level1)
+            GameManager.instance.setGameLevel(1);
+        if(isTouchingFloor)
+            GameManager.instance.setGameLevel(2);     
+        if (animController.GetBool("Shooting"))
+            GameManager.instance.setGameLevel(3);
     }
     void OnCollisionEnter(Collision collision)
     {
