@@ -4,6 +4,8 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 public class HamburgerController : MonoBehaviour
 {
+    [SerializeField]
+    private AudioSource attackSFX;
     Animator hamHamburgerAnimator;
     private float timer;
     Animator playerAnimator;
@@ -99,6 +101,7 @@ public class HamburgerController : MonoBehaviour
         if (attack && timer >= 3f)
         {
             hamHamburgerAnimator.SetBool("Attack", attack);
+            attackSFX.Play();
             quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);
             distanceRay = transform.forward * 10;
             ray = new Ray(attackPlayer.position, quaternionRay * distanceRay);

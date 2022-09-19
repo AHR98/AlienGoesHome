@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class Gun : MonoBehaviour
 {
     [SerializeField]
+    private AudioSource shootingSFX;
+    [SerializeField]
     private GameObject pressJ;
     [SerializeField]
     [Range(0.5f, 1.5f)] private float fireRate = 1;
@@ -44,6 +46,7 @@ public class Gun : MonoBehaviour
                     timer = 0;
                     var bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
                     bullet.GetComponent<Rigidbody>().velocity = bulletSpawn.forward * bulletSpeed;
+                    shootingSFX.Play();
                     shootParticle.Play();
                     FireGun(damage);
                     currentBullets--;

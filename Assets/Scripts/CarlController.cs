@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 public class CarlController : MonoBehaviour
 {
+    [SerializeField]
+    private AudioSource punchSFX;
     Animator carlAnimator;
     private float timer;
     Animator playerAnimator;
@@ -102,6 +104,7 @@ public class CarlController : MonoBehaviour
         {
             transform.LookAt(target); //look at Slinky
             carlAnimator.SetBool("Attack", attack);
+            punchSFX.Play();
             quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);
             distanceRay = transform.forward * 10;
             ray = new Ray(attackPlayer.position, quaternionRay * distanceRay);

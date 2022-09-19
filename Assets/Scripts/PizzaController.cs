@@ -5,6 +5,8 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 public class PizzaController : MonoBehaviour
 {
+    [SerializeField]
+    private AudioSource pepperoniSFX;
     Animator animatorPizza;
     [SerializeField]
     private float timer;
@@ -116,7 +118,7 @@ public class PizzaController : MonoBehaviour
                 if (hitInfo.transform.CompareTag("Player") && !hasAttacked )
                 {
                     animatorPizza.SetBool("Attack", attack);
-
+                    pepperoniSFX.Play();
                     instatiatePepperoniBullets();
                     hasAttacked = true;
 

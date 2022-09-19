@@ -5,6 +5,10 @@ using UnityEngine.UI;
 public class CollectItems : MonoBehaviour
 {
     [SerializeField]
+    private AudioSource collectItemsSFX;
+    [SerializeField]
+    private AudioSource healthSFX;
+    [SerializeField]
     private ParticleSystem openBoxParticle;
     [SerializeField]
     private GameObject pressKeyF;
@@ -28,6 +32,7 @@ public class CollectItems : MonoBehaviour
                 {
                     pressKeyF.SetActive(false);
                     GetComponent<SlikyController>().IncreaseHealth(health);
+                    healthSFX.Play();
                     Destroy(hitInfo.transform.gameObject);
 
                 }
@@ -40,8 +45,8 @@ public class CollectItems : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     pressKeyF.SetActive(false);
-
                     GetComponent<Gun>().increaseBulletsBar(bullets);
+                    collectItemsSFX.Play();
                     Destroy(hitInfo.transform.gameObject);
                 }
 
@@ -53,6 +58,7 @@ public class CollectItems : MonoBehaviour
                 {
                     anim = hitInfo.transform.GetComponentInParent<Animator>();
                     anim.SetTrigger("Opened");
+                    collectItemsSFX.Play();
                     openBoxParticle.Play();
                     GetComponent<SlikyController>().IncreaseHypnosis(hypnosis*2);
                     StartCoroutine(hideBoxes(hitInfo.transform.parent.gameObject));
@@ -66,6 +72,7 @@ public class CollectItems : MonoBehaviour
                 {
                     anim = hitInfo.transform.GetComponentInParent<Animator>();
                     anim.SetTrigger("Opened");
+                    healthSFX.Play();
                     openBoxParticle.Play();
                     GetComponent<SlikyController>().IncreaseHealth(health*3);
                     StartCoroutine(hideBoxes(hitInfo.transform.parent.gameObject));
@@ -79,6 +86,7 @@ public class CollectItems : MonoBehaviour
                 {
                     anim = hitInfo.transform.GetComponentInParent<Animator>();
                     anim.SetTrigger("Opened");
+                    collectItemsSFX.Play();
                     openBoxParticle.Play();
                     GetComponent<Gun>().increaseBulletsBar(bullets*3);
                     StartCoroutine(hideBoxes(hitInfo.transform.parent.gameObject));

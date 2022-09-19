@@ -16,6 +16,8 @@ public class SlikyController : MonoBehaviour
     private int currentHypnosis;
     private int damageHypnosis = 5;
     [SerializeField]
+    private AudioSource hypnosisSFX;
+    [SerializeField]
     private GameObject target;
     [SerializeField]
     private GameObject niloAnim;
@@ -164,6 +166,7 @@ public class SlikyController : MonoBehaviour
         {
             animController.SetBool("Hypnosis", true);
             hypnosisParticle.Play();
+            hypnosisSFX.Play();
             currentHypnosis -= damageHypnosis;
             hypnosisChange((float)currentHypnosis / (float)hypnosis);
             GetComponent<Gun>().FireGun(damageHypnosis);
