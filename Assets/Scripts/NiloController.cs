@@ -13,7 +13,7 @@ public class NiloController : MonoBehaviour
     NavMeshAgent agentNilo;
     Transform target;
     public bool followSlinky = false;
-
+    public bool saveData = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +40,11 @@ public class NiloController : MonoBehaviour
 
         if (followSlinky)
         {
-           
+            if(!saveData)
+            {
+                GameManager.instance.saveData();
+                saveData = true;
+            }
             agentNilo.SetDestination(target.position);
             niloAnimnator.SetBool("Walk", true);
             if (distance <= agentNilo.stoppingDistance)

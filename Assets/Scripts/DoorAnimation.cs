@@ -7,7 +7,6 @@ public class DoorAnimation : MonoBehaviour
     [SerializeField]
     private GameObject pressKeyF;
     public Transform PlayerCamera;
-    [Header("MaxDistance you can open or close the door.")]
     public float MaxDistance = 3;
     
     private bool opened = false;
@@ -15,7 +14,7 @@ public class DoorAnimation : MonoBehaviour
     [SerializeField]
     private GameObject niloScript;
     private bool niloFounded = false;
-
+    private bool saveData = false;
     void Update()
     {
         getNilo();
@@ -54,6 +53,11 @@ public class DoorAnimation : MonoBehaviour
                     opened = !opened;
 
                     anim.SetBool("Opened", !opened);
+                    if(!saveData)
+                    {
+                        GameManager.instance.saveData();
+                        saveData = true;
+                    }
                 }
             }
 

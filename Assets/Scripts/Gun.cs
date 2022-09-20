@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
     [SerializeField]
     private int maxBullets = 10;
     [SerializeField]
-    private int currentBullets;
+    public int currentBullets;
     public GameObject bulletPrefab;
     public float bulletSpeed = 10;
     [SerializeField]
@@ -94,6 +94,10 @@ public class Gun : MonoBehaviour
         currentBullets = maxBullets;
     }
 
+    public void setLoadData()
+    {
+        shootingBar((float)currentBullets / (float)maxBullets);
+    }
     private void shootingBarChange(float _bulletsDamage)
     {
         StartCoroutine(shootingBar(_bulletsDamage));

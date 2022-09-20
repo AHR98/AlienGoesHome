@@ -10,10 +10,9 @@ public class SlikyController : MonoBehaviour
     private int startingHealth = 50;
     [SerializeField]
     private Image healthBar;
-    [SerializeField]
-    private int currentHealth;
+    public int currentHealth;
     private int hypnosis = 20;
-    private int currentHypnosis;
+    public int currentHypnosis;
     private int damageHypnosis = 5;
     [SerializeField]
     private AudioSource hypnosisSFX;
@@ -29,9 +28,9 @@ public class SlikyController : MonoBehaviour
     private float verticalDirection;
     private float jumpingForce = 8.5f;
     private CharacterController characterController;
-    private bool isTouchingFloor = false;
+    public bool isTouchingFloor = false;
     private Vector3 velocity;
-    private bool level1 = false;
+    public bool level1 = false;
     public bool isDead = false;
 
     [SerializeField]
@@ -198,6 +197,11 @@ public class SlikyController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         GameManager.instance.ResumeGame();
     }
+    public void setLoadData()
+    {
+        healthChange((float)currentHealth / (float)startingHealth);
+        hypnosisChange((float)currentHypnosis / (float)hypnosis);
+    }
     public void IncreaseHealth(int increase)
     {
         if(currentHealth < startingHealth)
@@ -258,4 +262,5 @@ public class SlikyController : MonoBehaviour
         hypnosisBar.fillAmount = _hpynosis;
     }
 
+   
 }

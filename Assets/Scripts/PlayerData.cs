@@ -1,18 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PlayerData : MonoBehaviour
+[System.Serializable]
+public class PlayerData
 {
-    // Start is called before the first frame update
-    void Start()
+    public int level;
+    public int healthPlayer;
+    public int bullets;
+    public int hpynosis;
+    public float[] positionPlayer;
+    public PlayerData(SlikyController player, Gun gunPlayer, GameObject slinkyGameObject)
     {
-        
-    }
+        positionPlayer = new float[3];
+        positionPlayer[0] = slinkyGameObject.transform.position.x;
+        positionPlayer[1] = slinkyGameObject.transform.position.y;
+        positionPlayer[2] = slinkyGameObject.transform.position.z;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (player.level1)
+            level = 1;
+        if (player.isTouchingFloor)
+        {
+            level = 2;
+            positionPlayer[2] = slinkyGameObject.transform.position.z + 3.5f;
+        }
+            
+        healthPlayer = player.currentHealth;
+        hpynosis = player.currentHypnosis;
+        bullets = gunPlayer.currentBullets;
+
+
+ 
+
+
     }
 }
