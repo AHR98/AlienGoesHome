@@ -7,7 +7,7 @@ public static class DataManager
    public static void savePlayer(SlikyController player, Gun playerGun, GameObject playerObj)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/AlienGoesHome/AlienGoesHome.game";
+        string path = Application.persistentDataPath + "AlienGoesHome.game";
         FileStream stream = new FileStream(path, FileMode.Create);
         PlayerData data = new PlayerData(player, playerGun, playerObj);
         formatter.Serialize(stream, data);
@@ -16,7 +16,7 @@ public static class DataManager
 
     public static PlayerData loadPlayer()
     {
-        string path = Application.persistentDataPath + "/AlienGoesHome/AlienGoesHome.game";
+        string path = Application.persistentDataPath + "AlienGoesHome.game";
         if(File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
