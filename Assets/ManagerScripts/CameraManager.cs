@@ -10,10 +10,15 @@ public class CameraManager : MonoBehaviour
     private GameObject cameraLevel1;
     [SerializeField]
     private GameObject cameraLevel2;
-
+    [SerializeField]
+    private GameObject cameraIntroduction;
+    [SerializeField]
+    private GameObject IntroductionPanel;
+    [SerializeField]
+    private GameObject MainCamera;
     void Update()
-    {
-        setLevel();
+    {       
+            setLevel();
     }
     private void setLevel()
     {
@@ -25,25 +30,34 @@ public class CameraManager : MonoBehaviour
 
     private void activeCamera()
     {
-        if (!MainMenuPanel.activeInHierarchy)
+        if (!MainMenuPanel.activeInHierarchy && !IntroductionPanel.activeInHierarchy)
         {
             switch (level)
             {
                 case 1:
+                    desactivateCamera(cameraIntroduction);
                     desactivateCamera(cameraLevel2);
                     activeCamera(cameraLevel1);
                     break;
                 case 2:
+                    desactivateCamera(cameraIntroduction);
                     desactivateCamera(cameraLevel1);
                     activeCamera(cameraLevel2);
                     break;
             }
 
         }
-        else
+        else if (IntroductionPanel.activeInHierarchy)
         {
+            desactivateCamera(MainCamera);
+            activeCamera(cameraIntroduction);
+        }
+        else
+        {           
             desactivateCamera(cameraLevel2);
             desactivateCamera(cameraLevel1);
+            desactivateCamera(cameraIntroduction);
+
         }
 
     }

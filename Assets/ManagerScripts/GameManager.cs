@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public UIManager getPanel;
     public GameObject MainMenuPanel;
+    public GameObject IntroductionPanel;
     private GameObject slinkyPlayer;
     public GameObject niloPlayer;
     private SlikyController slikyController;
@@ -29,7 +30,6 @@ public class GameManager : MonoBehaviour
 
     public void loadData()
     {
-        Quaternion quaternion = new Quaternion();
         slikyController = slinkyPlayer.GetComponent<SlikyController>();
         slinkyGun = slinkyPlayer.GetComponent<Gun>();
         niloPlayer.GetComponent<NiloController>().followSlinky = true;
@@ -41,12 +41,10 @@ public class GameManager : MonoBehaviour
         slikyController.currentHealth = data.healthPlayer;
         slikyController.currentHypnosis = data.hpynosis;
         slinkyGun.currentBullets = data.bullets;
-
         positionLoad.x = data.positionPlayer[0];
         positionLoad.y = data.positionPlayer[1];
         positionLoad.z = data.positionPlayer[2];
 
-        Debug.Log("Vector3" + positionLoad.ToString());
         slinkyPlayer.GetComponent<CharacterController>().enabled = false;
         slinkyPlayer.transform.position = positionLoad;
         slinkyPlayer.GetComponent<CharacterController>().enabled = true;
@@ -64,7 +62,7 @@ public class GameManager : MonoBehaviour
     {
         if(instance == null)
             instance = this;
-        //PauseGame();
+        PauseGame();
 
     }
 
@@ -91,12 +89,20 @@ public class GameManager : MonoBehaviour
             StartCoroutine(CountDownRutine());
             
         }
-        else if (!MainMenuPanel.activeInHierarchy)
+        if (!MainMenuPanel.activeInHierarchy && !IntroductionPanel.activeInHierarchy)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 PauseGame();
                 getPanel.ShowPause();
+            }
+        }
+        if(IntroductionPanel.activeInHierarchy)
+        {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                getPanel.ShowGamePanel();
+                ResumeGame();
             }
         }
         

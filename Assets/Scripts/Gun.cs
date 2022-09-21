@@ -96,7 +96,7 @@ public class Gun : MonoBehaviour
 
     public void setLoadData()
     {
-        shootingBar((float)currentBullets / (float)maxBullets);
+        StartCoroutine(shootingBar((float)currentBullets / (float)maxBullets));
     }
     private void shootingBarChange(float _bulletsDamage)
     {

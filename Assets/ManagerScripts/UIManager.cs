@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public GameObject SettingsPanelMainMenu;
     public GameObject MainMenuPanel;
     public GameObject GameOverPanel;
+    public GameObject IntroductionPanel;
 
     public AudioMixer audioMixer;
     public Slider SFXSlider;
@@ -24,7 +25,7 @@ public class UIManager : MonoBehaviour
         MainMenuPanel.SetActive(false);
         GameOverPanel.SetActive(false);
         SettingsPanelMainMenu.SetActive(false);
-
+        IntroductionPanel.SetActive(false); 
     }
 
     public void ShowPause()
@@ -59,6 +60,11 @@ public class UIManager : MonoBehaviour
     {
         ClearPanels();
         GameOverPanel.SetActive(true);
+    }
+    public void ShowIntroductionPanel()
+    {
+        ClearPanels();
+        IntroductionPanel.SetActive(true);
     }
     public void ApplyAudioMixerSettings()
     {
