@@ -23,7 +23,8 @@ public class CarlController : MonoBehaviour
     private Vector3 distanceRay;
     private EnemyController enemyController;
     private bool chaseSlinky = false;
- 
+    private bool activateShootingSlinky = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +63,7 @@ public class CarlController : MonoBehaviour
             playerAnimator.SetBool("Shooting", true);
             agentCarl.SetDestination(target.position);
             carlAnimator.SetFloat("Direction", 1f);
+            activateShootingSlinky = true;
 
             if (distance <= agentCarl.stoppingDistance) //Atack
             {
@@ -73,7 +75,6 @@ public class CarlController : MonoBehaviour
             }
             else
             {
-                //carlAnimator.SetBool("Chase", true);
                 Attack(false);
             }
         }
@@ -82,7 +83,11 @@ public class CarlController : MonoBehaviour
             Attack(false);
             ///Idle
             carlAnimator.SetFloat("Direction", 0f);
-
+            if (activateShootingSlinky)
+            {
+                playerAnimator.SetBool("Shooting", false);
+                activateShootingSlinky = false;
+            }
 
         }
 

@@ -77,12 +77,9 @@ public class SlikyController : MonoBehaviour
         animController.SetFloat("Direction", horizontalDirection);
 
         move = transform.right * horizontalDirection + transform.forward * verticalDirection;
-        //Debug.Log("Move " + move.ToString());
 
-        //characterController.Move(move  * Time.deltaTime);
         animController.SetBool("Jump", false);
         animController.SetBool("Hypnosis", false);
-
         //Special Dance
         if (Input.GetKey(KeyCode.LeftShift))
             if (Input.GetKeyUp(KeyCode.Z))
@@ -114,10 +111,10 @@ public class SlikyController : MonoBehaviour
             gun.SetActive(true);
             target.SetActive(true);
 
-            if (!level1) //Level2
+            if (!level1 && currentHypnosis > 0) //Level2
             {
                 pressKeyK.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.K))
+                if (Input.GetKeyDown(KeyCode.K) )
                 {
                     hypnosisParticle.transform.gameObject.SetActive(true);
                     AttackHypnosis();

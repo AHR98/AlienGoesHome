@@ -15,6 +15,8 @@ public class HamburgerController : MonoBehaviour
     NavMeshAgent agentHam;
     [SerializeField]
     private Transform attackPlayer;
+    [SerializeField]
+    private ParticleSystem attackParticle;
     [SerializeField][Range(1, 10)] private int damage = 1;
     bool isDead = false;
     private RaycastHit hitInfo;
@@ -23,6 +25,7 @@ public class HamburgerController : MonoBehaviour
     private Vector3 distanceRay;
     private EnemyController enemyController;
     private bool chaseSlinky = false;
+    private bool activateShootingSlinky = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,41 +52,35 @@ public class HamburgerController : MonoBehaviour
         {
             if (hitInfo.transform.CompareTag("Player"))
             {
-                //Debug.Log("Es slinky!");
                 chaseSlinky = true;
             }
         }
-        //   rayHamburger = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
         if (distance <= lookRadius && !isDead && chaseSlinky)
         {
             hamHamburgerAnimator.SetBool("Chase", true);
             agentHam.SetDestination(target.position);
             playerAnimator.SetBool("Shooting", true);
-            
-            //  hamHamburgerAnimator.SetFloat("Distance", distance);
+            activateShootingSlinky = true; 
 
             if (distance <= agentHam.stoppingDistance ) //Atack
             {
-                // playerAnimator.SetTrigger("Die");
                 timer += Time.deltaTime;
 
                 hamHamburgerAnimator.SetBool("Chase", false);
                 Attack(true);
 
             }
-            else
-            {
-                hamHamburgerAnimator.SetBool("Chase", true);
-                Attack(false);
-            }
+           
         }
         else
         {
             Attack(false);
             hamHamburgerAnimator.SetBool("Chase", false);
-         //   playerAnimator.SetBool("Shooting", false);
-
-
+            if(activateShootingSlinky)
+            {
+                playerAnimator.SetBool("Shooting", false);
+                activateShootingSlinky = false;
+            }
         }
 
 
@@ -102,6 +99,7 @@ public class HamburgerController : MonoBehaviour
         {
             hamHamburgerAnimator.SetBool("Attack", attack);
             attackSFX.Play();
+            attackParticle.Play();
             quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);
             distanceRay = transform.forward * 10;
             ray = new Ray(attackPlayer.position, quaternionRay * distanceRay);

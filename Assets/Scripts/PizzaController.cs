@@ -36,6 +36,7 @@ public class PizzaController : MonoBehaviour
     public float NTime;
     private EnemyController enemyController;
     private bool chaseSlinky = false;
+    private bool activateShootingSlinky = false;
 
     // Start is called before the first frame update
     void Start()
@@ -70,8 +71,8 @@ public class PizzaController : MonoBehaviour
             slinkyAnimator.SetBool("Shooting", true);
             animatorPizza.SetBool("Chase", true);
             pizzaAgent.SetDestination(target.position);
+            activateShootingSlinky = true;
 
-            //  hamHamburgerAnimator.SetFloat("Distance", distance);
 
             if (distance <= pizzaAgent.stoppingDistance ) //Atack
             {
@@ -82,18 +83,17 @@ public class PizzaController : MonoBehaviour
                 
 
             }
-            //else
-            //{
-            //    animatorPizza.SetBool("Chase", true);
-            //    Attack(false);
-            //}
+          
         }
         else
         {
             Attack(false);
             animatorPizza.SetBool("Chase", false);
-       //     slinkyAnimator.SetBool("Shooting", false);
-
+            if (activateShootingSlinky)
+            {
+                slinkyAnimator.SetBool("Shooting", false);
+                activateShootingSlinky = false;
+            }
 
         }
 

@@ -38,10 +38,10 @@ public class Gun : MonoBehaviour
             
         if (timer >= fireRate)
         {
-            if(isShootingSlinky)
+            if(isShootingSlinky && currentBullets > 0)
             {
                 pressJ.SetActive(true);
-                if (Input.GetButton("Fire1"))
+                if (Input.GetButton("Fire1") )
                 {
                     timer = 0;
                     var bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
