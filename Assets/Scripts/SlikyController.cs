@@ -11,9 +11,9 @@ public class SlikyController : MonoBehaviour
     [SerializeField]
     private Image healthBar;
     public int currentHealth;
-    private int hypnosis = 20;
+    private int hypnosis = 30;
     public int currentHypnosis;
-    private int damageHypnosis = 5;
+    private int damageHypnosis = 20;
     [SerializeField]
     private AudioSource hypnosisSFX;
     [SerializeField]

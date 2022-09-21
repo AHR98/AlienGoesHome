@@ -17,7 +17,7 @@ public class PizzaController : MonoBehaviour
     NavMeshAgent pizzaAgent;
     [SerializeField]
     private Transform attackPlayer;
-    [SerializeField][Range(1, 10)] private int damage = 10;
+    [SerializeField][Range(1, 20)] private int damage = 20;
     bool isDead = false;
     private RaycastHit hitInfo;
     private Ray ray;
@@ -26,7 +26,6 @@ public class PizzaController : MonoBehaviour
 
     [SerializeField]
     [Range(0.5f, 1.5f)] private float fireRate = 1;
-    [SerializeField][Range(1, 10)] private int damagePepperoni = 1;
     public GameObject pepperoniPrefab;
     public float pepperoniSpeed = 1;
     [SerializeField]

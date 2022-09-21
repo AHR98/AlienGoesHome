@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public GameObject niloPlayer;
     private SlikyController slikyController;
     private Gun slinkyGun;
-
+    public bool loadeddata = false;
     private int level = 0;
     private Vector3 positionLoad;
 
@@ -56,7 +56,9 @@ public class GameManager : MonoBehaviour
     {
         slikyController.setLoadData();
         slinkyGun.setLoadData();
-        
+        loadeddata = true;
+
+
     }
     private void Awake()
     {
@@ -105,10 +107,17 @@ public class GameManager : MonoBehaviour
                 ResumeGame();
             }
         }
+        if(loadeddata && MainMenuPanel.activeInHierarchy)
+        {
+            ResetTheGame();
+        }
         
        
     }
-
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
     public void PauseGame()
     {
         Time.timeScale = 0;

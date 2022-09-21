@@ -15,7 +15,7 @@ public class CarlController : MonoBehaviour
     NavMeshAgent agentCarl;
     [SerializeField]
     private Transform attackPlayer;
-    [SerializeField][Range(1, 10)] private int damage = 1;
+    [SerializeField][Range(1, 30)] private int damage = 15;
     bool isDead = false;
     private RaycastHit hitInfo;
     private Ray ray;

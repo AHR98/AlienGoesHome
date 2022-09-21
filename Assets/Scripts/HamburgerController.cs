@@ -17,7 +17,7 @@ public class HamburgerController : MonoBehaviour
     private Transform attackPlayer;
     [SerializeField]
     private ParticleSystem attackParticle;
-    [SerializeField][Range(1, 10)] private int damage = 1;
+    [SerializeField][Range(1, 15)] private int damage = 15;
     bool isDead = false;
     private RaycastHit hitInfo;
     private Ray ray;
@@ -90,12 +90,10 @@ public class HamburgerController : MonoBehaviour
 
     private void Attack(bool attack)
     {
-        //Make a 360 ray to make damage to slinky
-
-        //Debug.DrawRay(attackPlayer.position, q * d, Color.green);
+        
         transform.LookAt(target); //look at Slinky
 
-        if (attack && timer >= 3f)
+        if (attack && timer >= 2.5f)
         {
             hamHamburgerAnimator.SetBool("Attack", attack);
             attackSFX.Play();
@@ -103,7 +101,6 @@ public class HamburgerController : MonoBehaviour
             quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);
             distanceRay = transform.forward * 10;
             ray = new Ray(attackPlayer.position, quaternionRay * distanceRay);
-          //  Debug.DrawRay(attackPlayer.position, quaternionRay * distanceRay, Color.green);
             if (Physics.Raycast(ray, out hitInfo, agentHam.stoppingDistance))
             {
                 if (hitInfo.transform.CompareTag("Player"))

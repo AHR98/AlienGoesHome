@@ -10,7 +10,7 @@ public class Gun : MonoBehaviour
     private GameObject pressJ;
     [SerializeField]
     [Range(0.5f, 1.5f)] private float fireRate = 1;
-    [SerializeField] [Range(1, 10)] private int damage = 1;
+    [SerializeField] [Range(1, 20)] private int damage = 15;
     private float timer;
     [SerializeField]
     private Transform firePoint;
@@ -19,7 +19,7 @@ public class Gun : MonoBehaviour
     [SerializeField]
     private Image gunPower;
     [SerializeField]
-    private int maxBullets = 10;
+    private int maxBullets = 20;
     [SerializeField]
     public int currentBullets;
     public GameObject bulletPrefab;

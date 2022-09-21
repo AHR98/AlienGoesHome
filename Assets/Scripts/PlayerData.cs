@@ -21,7 +21,7 @@ public class PlayerData
         if (player.isTouchingFloor)
         {
             level = 2;
-            positionPlayer[2] = slinkyGameObject.transform.position.z + 3.5f;
+            positionPlayer[1] = slinkyGameObject.transform.position.y + 1.5f;
         }
             
         healthPlayer = player.currentHealth;

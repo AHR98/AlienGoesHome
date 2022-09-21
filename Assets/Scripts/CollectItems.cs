@@ -15,9 +15,9 @@ public class CollectItems : MonoBehaviour
     [SerializeField]
     private Transform firePoint;
     private Animator anim;
-    private int health = 5;
-    private int bullets = 3;
-    private int hypnosis = 3;
+    private int health = 20;
+    private int bullets = 10;
+    private int hypnosis = 10;
     private void getItems()
     {
         Ray ray = new Ray(firePoint.position, firePoint.forward);
