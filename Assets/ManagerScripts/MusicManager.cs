@@ -16,7 +16,7 @@ class MusicManager : MonoBehaviour
     }
     private void setLevel()
     {
-        level = GameManager.instance.getGameLevel();
+        level = GameManager.instance.getStatusLevel();
         musicToPlay();
     }
     private void musicToPlay()

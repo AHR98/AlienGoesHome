@@ -138,16 +138,26 @@ public class SlikyController : MonoBehaviour
         velocity.y += -9.81f * Time.deltaTime; //Así siempre lo ancla hacia abajo, hacia la tierra
         characterController.Move(velocity * Time.deltaTime);
         setGameManagerLevel();
+        setGameManagerStatusLevel();
 
     }
-    private void setGameManagerLevel()
+    private void setGameManagerStatusLevel()
     {
         if(level1)
-            GameManager.instance.setGameLevel(1);
+            GameManager.instance.setStatusLevel(1);
         if(isTouchingFloor)
-            GameManager.instance.setGameLevel(2);     
+            GameManager.instance.setStatusLevel(2);     
         if (animController.GetBool("Shooting"))
-            GameManager.instance.setGameLevel(3);
+            GameManager.instance.setStatusLevel(3);
+    }
+
+    private void setGameManagerLevel()
+    {
+        if (level1)
+            GameManager.instance.setGameLevel(1);
+        if (isTouchingFloor)
+            GameManager.instance.setGameLevel(2);
+  
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -156,11 +166,15 @@ public class SlikyController : MonoBehaviour
             //Slinky is touching the floor
             isTouchingFloor = true;
             level1 = false;
+            GameManager.instance.setGameLevel(2);
+
         }
-        if(collision.transform.gameObject.CompareTag("FloorLevel1"))
+        if (collision.transform.gameObject.CompareTag("FloorLevel1"))
         {
             level1 = true;
             isTouchingFloor = false;
+            GameManager.instance.setGameLevel(1);
+
 
         }
     }

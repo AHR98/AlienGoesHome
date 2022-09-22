@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     private Gun slinkyGun;
     public bool loadeddata = false;
     private int level = 0;
+    private int status = 0;
     private Vector3 positionLoad;
 
     public void saveData()
@@ -136,12 +137,19 @@ public class GameManager : MonoBehaviour
     {
         return level;
     }
-     
+    public int getStatusLevel()
+    {
+        return status;
+    }
     public void setGameLevel(int _level)
     {
         level = _level;
-        if(level == 2)
-            saveData();
+       
+    }
+    public void setStatusLevel(int _status)
+    {
+        status = _status;
+        
     }
     public enum GameLevel
     {

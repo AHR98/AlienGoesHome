@@ -20,6 +20,7 @@ public class CameraManager : MonoBehaviour
     {       
             setLevel();
     }
+   
     private void setLevel()
     {
 
