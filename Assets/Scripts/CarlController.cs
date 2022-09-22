@@ -16,7 +16,7 @@ public class CarlController : MonoBehaviour
     [SerializeField]
     private Transform attackPlayer;
     [SerializeField][Range(1, 30)] private int damage = 15;
-    bool isDead = false;
+    public bool isDead = false;
     private RaycastHit hitInfo;
     private Ray ray;
     private Quaternion quaternionRay;
@@ -44,6 +44,10 @@ public class CarlController : MonoBehaviour
       
         //Check if the enemy is dead
         isDead = enemyController.getDieInfo();
+        if(isDead)
+        {
+            GameManager.instance.carlDied();
+        }
         //Check if the player is near before the chase
         quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);
         distanceRay = transform.forward * 10;
@@ -80,15 +84,13 @@ public class CarlController : MonoBehaviour
         }
         else
         {
-            Attack(false);
-            ///Idle
+            Attack(false);           
             carlAnimator.SetFloat("Direction", 0f);
             if (activateShootingSlinky)
             {
                 playerAnimator.SetBool("Shooting", false);
                 activateShootingSlinky = false;
             }
-
         }
 
         
@@ -100,11 +102,7 @@ public class CarlController : MonoBehaviour
 
     private void Attack(bool attack)
     {
-        //Make a 360 ray to make damage to slinky
-
-        //Debug.DrawRay(attackPlayer.position, q * d, Color.green);
-        
-
+       
         if (attack && timer >= 3f)
         {
             transform.LookAt(target); //look at Slinky
@@ -113,7 +111,6 @@ public class CarlController : MonoBehaviour
             quaternionRay = Quaternion.AngleAxis(100 * Time.time, Vector3.up);
             distanceRay = transform.forward * 10;
             ray = new Ray(attackPlayer.position, quaternionRay * distanceRay);
-            //  Debug.DrawRay(attackPlayer.position, quaternionRay * distanceRay, Color.green);
             if (Physics.Raycast(ray, out hitInfo, agentCarl.stoppingDistance))
             {
                 if (hitInfo.transform.CompareTag("Player"))

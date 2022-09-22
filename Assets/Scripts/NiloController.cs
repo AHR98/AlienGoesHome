@@ -14,6 +14,8 @@ public class NiloController : MonoBehaviour
     Transform target;
     public bool followSlinky = false;
     public bool saveData = false;
+    [SerializeField]
+    private GameObject hiSlinky;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,11 +42,15 @@ public class NiloController : MonoBehaviour
 
         if (followSlinky)
         {
-            if(!saveData)
+            
+            if (!saveData)
             {
                 GameManager.instance.saveData();
                 saveData = true;
+                hiSlinky.SetActive(true);
+                StartCoroutine(desactivateHelloPanel());
             }
+            
             agentNilo.SetDestination(target.position);
             niloAnimnator.SetBool("Walk", true);
             if (distance <= agentNilo.stoppingDistance)
@@ -53,4 +59,10 @@ public class NiloController : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator desactivateHelloPanel()
+    {
+        yield return new WaitForSeconds(6);
+        hiSlinky.SetActive(false);
+    }    
 }

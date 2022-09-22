@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     private int level = 0;
     private int status = 0;
     private Vector3 positionLoad;
-
+    private bool saveLevel2 = false;
     public void saveData()
     {
         slikyController = slinkyPlayer.GetComponent<SlikyController>();
@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour
         positionLoad.x = data.positionPlayer[0];
         positionLoad.y = data.positionPlayer[1];
         positionLoad.z = data.positionPlayer[2];
+
+        if (data.level == 2)
+            positionLoad.z -=  5.0f;
 
         slinkyPlayer.GetComponent<CharacterController>().enabled = false;
         slinkyPlayer.transform.position = positionLoad;
@@ -82,10 +85,23 @@ public class GameManager : MonoBehaviour
         getPanel.ShowGameOverPanel();
 
     }
+    public void carlDied()
+    {
+        StartCoroutine(CountDownWin());
+    }
+    IEnumerator CountDownWin()
+    {
+
+        yield return new WaitForSeconds(6);
+        PauseGame();
+        getPanel.ShowWinPanel();
+
+    }
     private void Update()
     {
 
         slikyController = slinkyPlayer.GetComponent<SlikyController>();
+
         if(slikyController.isDead )
         {
             saveData();
@@ -144,6 +160,12 @@ public class GameManager : MonoBehaviour
     public void setGameLevel(int _level)
     {
         level = _level;
+        if (level == 2 && !saveLevel2)
+        {
+            saveLevel2 = true;
+            saveData();
+        }
+           
        
     }
     public void setStatusLevel(int _status)

@@ -13,7 +13,7 @@ public class SlikyController : MonoBehaviour
     public int currentHealth;
     private int hypnosis = 30;
     public int currentHypnosis;
-    private int damageHypnosis = 20;
+    private int damageHypnosis = 5;
     [SerializeField]
     private AudioSource hypnosisSFX;
     [SerializeField]
